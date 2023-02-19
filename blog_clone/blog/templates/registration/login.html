@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog</title>
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+
+
+    <!--  Medium Style Editor  -->
+    <script src="//cdn.jsdelivr.net/npm/medium-editor@latest/dist/js/medium-editor.min.js"></script>
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/medium-editor@latest/dist/css/medium-editor.min.css" type="text/css" media="screen" charset="utf-8">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{% static 'css/blog.css'%}">
+
+    <!-- google fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato&display=swap" rel="stylesheet">
+
+</head>
+<body class="loader">
+    <!-- Navbar -->
+    <nav class="navbar navbar-default lato custom-nav">
+        <div class="container">
+            <ul class="nav navbar-nav">
+                <li><a class="navbar-brand big" href="{% url 'post_list'%}">My Blog</a></li>
+                <li><a href="{% url 'about' %}">About</a></li>
+                <li><a href="https://github.com/">Github</a></li>
+                <li><a href="https://www.linkedin.com">LinkedIn</a></li>
+            </ul>
+
+            <ul class="nav navbar-nav navbar-right">
+                {% if user.is_authenticated %}
+                <li>
+                    <a href="{% url 'create_post'%}">New Post</a>
+                
+                </li>
+                <li>
+                    <a href="{% url 'post_draft_list'%}">Drafts</a>
+                
+                </li>
+                <li>
+                    <a href="{% url 'login'%}">Log Out</a>
+                
+                </li>
+                <li>
+                    <a href="">Welcome: {{user.username}}</a>
+                </li>
+                {% else %}
+                <li><a href="{% url 'login' %}"><span class="glyphicon glyphicon-user"></span></a></li>
+
+                {% endif %}
+            </ul>
+
+
+        </div>
+        
+    </nav>
+    <div class="logindiv">
+        <div class="jumbotron">
+            <h2>Please Login: </h2>
+            <h3>(Must be SuperUser to login)</h3>
+        
+            {% if form.errors %}
+                <p>Your username and password didn't match! Please try again</p>
+        
+            {% endif %}
+        
+            <form action="{% url 'login' %}" method="POST">
+                {% csrf_token %}
+                    {{ form.as_p }}
+                    <input type="submit" class="btn btn-primary" value="Login">
+                    <input type="hidden" name = "next" value = {{next}}>
+        
+            </form>
+        
+        
+        </div>
+    </div>
+
+
+    <!-- content -->
+
+    <div class="content container">
+        <div class="row">
+            <div class="col-md-8">
+                <div class="blog_posts">
+                    {% block content %}
+                    {% endblock %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer> 
+        <div id="footer">
+            <p>Blog Site Clone &copy; 2023 - Mausham Bista</p>
+
+            <div class="social">
+                <a href="https://facebook.com" target="_blank">
+                    <img src="../../static/pictures/facebook.png" alt="fb icon">
+                </a>
+                <a href="https://twitter.com" target="_blank">
+                    <img src="../../static/pictures/twitter.png" alt="twitter icon" >
+                </a>
+                <a href="https://instagram.com" target="_blank">
+                    <img src="../../static/pictures/instagram.png" alt="instagram icon" >
+                </a>
+    
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>
+
+
+
+
+
